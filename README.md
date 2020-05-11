@@ -7,8 +7,7 @@ TODO:
 DONE: 
 ```$bash
 docker build -t wcc-python:latest . && \
-docker run --rm --mount type=bind,source=$(pwd),target=/usr/src/app wcc-python:latest test.dat
-
+docker run --rm --mount type=bind,source=$(pwd)/sample,target=/home/sample wcc-python:latest /home/sample/example.csv -o /home/sample/out.csv
 ```
 2. process data to separate out the parking information with parking lat long data
 

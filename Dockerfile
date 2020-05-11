@@ -2,7 +2,7 @@ FROM python:alpine
 
 WORKDIR /usr/src/app
 
-COPY . .
+COPY nztm/src/* .
 
 ENTRYPOINT ["python", "nztm_to_geod.py"]
 
