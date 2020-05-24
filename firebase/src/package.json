@@ -1,0 +1,11 @@
+{
+  "name": "firebase-upload",
+  "version": "1.0.0",
+  "description": "Upload wcc data to firebase",
+  "dependencies": {
+    "csvtojson": "^2.0.10",
+    "firebase-admin": "^8.12.1",
+    "geofirestore": "^3.4.3",
+    "yargs": "^15.3.1"
+  }
+}

@@ -53,18 +53,19 @@ class NztmToGeod:
 
     def convert_file_to_lat_long(self):
         with open(self.input_filename, newline='') as csvInput, open(self.output_filename, 'w') as csvOutput:
-            csvOutput.write("system_id, latitude, longitude\n")
+            csvOutput.write("GlobalID,purpose,latitude,longitude\n")
 
-            fieldnames = ['x', 'y', 'system_id']
+            fieldnames = ['X', 'Y', 'system_id', 'meter', 'purpose', 'orientation', 'on_off_road', 'road_id', 'street_address', 'asset_owner', 'OBJECTID', 'GlobalID']
             reader = csv.DictReader(csvInput, fieldnames=fieldnames)
             next(reader, None)
 
             for line in reader:
-                system_id = line['system_id']
-                easting = float(line['x'])
-                northing = float(line['y'])
+                global_id = line['GlobalID']
+                purpose = line['purpose']
+                easting = float(line['X'])
+                northing = float(line['Y'])
                 latitude, longitude = self.to_lat_long(easting, northing)
-                csvOutput.write("{}, {}, {}\n".format(system_id, latitude, longitude))
+                csvOutput.write("{},{},{},{}\n".format(global_id, purpose, latitude, longitude))
 
 
 if __name__ == "__main__":
