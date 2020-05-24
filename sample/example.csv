@@ -1,2 +1,2 @@
-site_id,X,Y
-9912,1749111.6867,5428899.4356
+X,Y,system_id,meter,purpose,orientation,on_off_road,road_id,street_address,asset_owner,OBJECTID,GlobalID
+1749111.6867,5428899.4356,9912,Yes,Regular,Parallel,On Road,THORNDON QUAY,,Local Authority,9897,41374858-a0c9-4df0-a5d3-7c2bfd2e2fd9
