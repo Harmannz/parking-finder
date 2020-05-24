@@ -1,3 +1,13 @@
+# WCC Disabled Car Parking Service
+
+Project to help find nearby car parks in Wellington greater area.
+
+## MVP
+
+MVP is to restrict the parking to just disabled car parks.
+
+ 
+
 TODO:
 
 
@@ -20,7 +30,10 @@ python -m unittest nztm/test/test_nztm_to_geod.py
 DONE:
 
 3. upload data to firebase
-
+DONE:
 4. upload lat long info to geofire
-
+DONE:
 5. Test it works
+DONE:
+
+TODO: DOCUMENT THE ABOVE
