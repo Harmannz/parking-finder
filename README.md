@@ -78,6 +78,7 @@ Run `firestore_upload.js --help` for help on cli arguments
 
 At the end you should have two collections, one containing documents on car parks and other containing documents on car park's geographic location.
 
+![Firebase geolocation data example](geo-car-park.PNG "Firebase Geo location data")
 
 # Location-based querying
 
