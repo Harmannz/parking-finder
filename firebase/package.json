@@ -2,10 +2,19 @@
   "name": "firebase-upload",
   "version": "1.0.0",
   "description": "Upload wcc data to firebase",
+  "scripts": {
+    "test": "./node_modules/mocha/bin/mocha --timeout=10000"
+  },
   "dependencies": {
     "csvtojson": "^2.0.10",
     "firebase-admin": "^8.12.1",
     "geofirestore": "^3.4.3",
     "yargs": "^15.3.1"
+  },
+  "devDependencies": {
+    "@firebase/app": "^0.6.4",
+    "@firebase/testing": "^0.19.6",
+    "firebase-tools": "^8.4.1",
+    "mocha": "^7.2.0"
   }
 }
