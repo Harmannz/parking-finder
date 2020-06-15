@@ -1,10 +1,8 @@
-FROM node:14
+FROM timbru31/java-node:11-jre
 
 WORKDIR /usr/src/app
 
-RUN apt-get update && \
-    apt-get install -y openjdk-8-jdk && \
-    npm install -g firebase-tools
+RUN npm install -g firebase-tools
 
 COPY package.json .
 
