@@ -1,4 +1,5 @@
 const firebase = require("@firebase/testing");
+const admin = require('firebase-admin');
 const fs = require("fs");
 
 /*
@@ -19,7 +20,10 @@ const geofire_upload = require('../src/geofire_upload')
  * @return {object} the app.
  */
 function initApp() {
-    return firebase.initializeTestApp({projectId}).firestore();
+    return admin.initializeApp({
+        credential: admin.credential.applicationDefault(),
+        databaseURL: `https://localhost:${firebasePort}`
+    }).firestore();
 }
 
 /*

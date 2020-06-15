@@ -32,4 +32,8 @@ Issues? Report them at https://github.com/firebase/firebase-tools/issues and att
 
 ```
 
-4. Run mocha tests `npm test`   
+### Testing
+
+If you have the firebase emulator running, run `npm test`
+
+otherwise you can use the [test.Dockerfile](test.Dockerfile) for testing. Run `$ docker build -t app:test --file test.Dockerfile . && docker run --rm -it app:test`   

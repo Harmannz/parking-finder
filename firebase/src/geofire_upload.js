@@ -4,14 +4,13 @@
  * Script to upload geo (lat, long) car parks to firebase
  */
 
-const firebase = require('firebase/app')
+const firebase = require('firebase-admin');
+const yargs = require('yargs')
+const {GeoFirestore} = require('geofirestore');
+const admin = require('firebase-admin');
+const csv = require('csvtojson')
 
 if (require.main === module) {
-
-    const yargs = require('yargs')
-    const {GeoFirestore} = require('geofirestore');
-    const admin = require('firebase-admin');
-    const csv = require('csvtojson')
 
     const argv = yargs
         .example('$0 -f foo.csv -c serviceAccount.js', 'Upload car parks data to GeoFirestore')
