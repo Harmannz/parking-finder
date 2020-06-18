@@ -11,10 +11,12 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
+    defaults:
+      run:
+        working-directory: firebase
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
-      run: docker build . --file firebase/test.Dockerfile --tag test-firebase-upload:$(date +%s)
+      run: docker build . --file test.Dockerfile --tag firebase:test
     - name: Test firebase upload
-      run: docker run --rm -it test-firebase-upload:$(date +%s)
+      run: docker run --rm firebase:test
