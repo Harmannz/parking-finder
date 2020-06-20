@@ -1,0 +1,35 @@
+name: Data Processing scripts
+
+on:
+  push:
+    branches:
+      - '**'
+
+jobs:
+
+  date-conversion-tests:
+
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: data/preparation
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the Docker image
+        run: docker build . --file test.Dockerfile --tag park:data-test
+      - name: Test file conversion
+        run: docker run --rm park:data-test
+
+  firebase-upload-tests:
+
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: data/upload/firebase
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image
+      run: docker build . --file test.Dockerfile --tag park:firebase-test
+    - name: Test firebase upload
+      run: docker run --rm park:firebase-test
+

@@ -1,5 +1,5 @@
 # WCC Disabled Car Parking Service
-[![<CircleCI>](https://circleci.com/gh/Harmannz/parking-finder.svg?style=svg&circle-token=17846e621b353d07f0cd298e2f7233fba2e1b395)](https://app.circleci.com/pipelines/github/Harmannz/parking-finder)
+![Data Processing scripts](https://github.com/Harmannz/parking-finder/workflows/Data%20Processing%20scripts/badge.svg)
 
 Project to help find nearby car parks in Wellington greater area.
 
@@ -19,7 +19,7 @@ The firebase data model is to separate geo-location information with static data
 
 The WCC dataset uses nztm to represent parking location. This needs to be converted to lat long to upload to firebase.
 
-[nztm/src/nztm_to_geod.py](nztm/src/nztm_to_geod.py) will convert the x and y nztm coordinates to lat long.
+[nztm/src/nztm_to_geod.py](data/preparation/nztm/src/nztm_to_geod.py) will convert the x and y nztm coordinates to lat long.
 
 python3 
 ```bash
@@ -41,18 +41,18 @@ park:latest \
 
 This script will create a csv file that can be uploaded to geofirestore.
 
-I have exported wcc data in [firebase/data](firebase/data).
+I have exported wcc data in [firebase/data](data/upload/firebase/data).
 
 ## Step 2. Upload to geolocation to GeoFirestore 
 
 I am using [GeoFirstore-JS](https://github.com/MichaelSolati/geofirestore-js/blob/master/README.md) library.
 
 Due to the nature of the GeoFirestore data structure, the data needs to be inserted by GeoFirestore js library in order to be able to query it later. 
-Thus the data is inserted into firebase via node scripts found in [firebase](firebase).  
+Thus the data is inserted into firebase via node scripts found in [firebase](data/upload/firebase).  
 
 To get started you need to create a firebase project and download serviceAccount json file. Follow relevant firebase guides to do this.
 
-Inserting geofire data is done by the [geofire_upload.js](firebase/src/geofire_upload.js).
+Inserting geofire data is done by the [geofire_upload.js](data/upload/firebase/src/geofire_upload.js).
 
 First run `npm install`, then
 
@@ -66,7 +66,7 @@ Run `geofire_upload.js --help` for help on cli arguments
 
 ## Step 3. Upload to car park data to Firestore
 
-Uploading car parks data is also done via node script [firestore_upload.js](firebase/src/firestore_upload.js). This script sanitizes WCC car park data, mainly to remove redundant fields, then uploads data to firestore. 
+Uploading car parks data is also done via node script [firestore_upload.js](data/upload/firebase/src/firestore_upload.js). This script sanitizes WCC car park data, mainly to remove redundant fields, then uploads data to firestore. 
 
 ```bash
 node firestore_upload.js \
