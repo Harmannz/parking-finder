@@ -1,7 +1,11 @@
 import unittest
 from unittest.mock import patch, mock_open, call
 
-from ..src.nztm_to_geod import NztmToGeod
+import pathlib
+import sys
+
+sys.path.insert(0, pathlib.Path(__file__).parent.absolute())
+from src.nztm_to_geod import NztmToGeod
 
 
 class TestNztmToGeod(unittest.TestCase):
