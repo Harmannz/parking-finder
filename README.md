@@ -41,18 +41,18 @@ park:latest \
 
 This script will create a csv file that can be uploaded to geofirestore.
 
-I have exported wcc data in [firebase/data](firebase/data).
+I have exported wcc data in [firebase/data](data/upload/firebase/data).
 
 ## Step 2. Upload to geolocation to GeoFirestore 
 
 I am using [GeoFirstore-JS](https://github.com/MichaelSolati/geofirestore-js/blob/master/README.md) library.
 
 Due to the nature of the GeoFirestore data structure, the data needs to be inserted by GeoFirestore js library in order to be able to query it later. 
-Thus the data is inserted into firebase via node scripts found in [firebase](firebase).  
+Thus the data is inserted into firebase via node scripts found in [firebase](data/upload/firebase).  
 
 To get started you need to create a firebase project and download serviceAccount json file. Follow relevant firebase guides to do this.
 
-Inserting geofire data is done by the [geofire_upload.js](firebase/src/geofire_upload.js).
+Inserting geofire data is done by the [geofire_upload.js](data/upload/firebase/src/geofire_upload.js).
 
 First run `npm install`, then
 
@@ -66,7 +66,7 @@ Run `geofire_upload.js --help` for help on cli arguments
 
 ## Step 3. Upload to car park data to Firestore
 
-Uploading car parks data is also done via node script [firestore_upload.js](firebase/src/firestore_upload.js). This script sanitizes WCC car park data, mainly to remove redundant fields, then uploads data to firestore. 
+Uploading car parks data is also done via node script [firestore_upload.js](data/upload/firebase/src/firestore_upload.js). This script sanitizes WCC car park data, mainly to remove redundant fields, then uploads data to firestore. 
 
 ```bash
 node firestore_upload.js \
