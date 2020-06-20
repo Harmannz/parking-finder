@@ -1,5 +1,5 @@
 # WCC Disabled Car Parking Service
-[![<CircleCI>](https://circleci.com/gh/Harmannz/parking-finder.svg?style=svg&circle-token=17846e621b353d07f0cd298e2f7233fba2e1b395)](https://app.circleci.com/pipelines/github/Harmannz/parking-finder)
+![Data Processing scripts](https://github.com/Harmannz/parking-finder/workflows/Data%20Processing%20scripts/badge.svg)
 
 Project to help find nearby car parks in Wellington greater area.
 
