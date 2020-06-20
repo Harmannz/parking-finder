@@ -19,7 +19,7 @@ The firebase data model is to separate geo-location information with static data
 
 The WCC dataset uses nztm to represent parking location. This needs to be converted to lat long to upload to firebase.
 
-[nztm/src/nztm_to_geod.py](nztm/src/nztm_to_geod.py) will convert the x and y nztm coordinates to lat long.
+[nztm/src/nztm_to_geod.py](data/preparation/nztm/src/nztm_to_geod.py) will convert the x and y nztm coordinates to lat long.
 
 python3 
 ```bash
