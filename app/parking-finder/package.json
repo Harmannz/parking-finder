@@ -9,20 +9,23 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
-    "firebase": "^7.19.0",
+    "firebase": "^7.19.1",
     "leaflet": "^1.6.0",
-    "vue": "^3.0.0-0",
+    "vue": "^2.6.11",
     "vue2-leaflet": "^2.5.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
-    "@vue/compiler-sfc": "^3.0.0-0",
+    "@vue/eslint-config-airbnb": "^5.0.2",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
-    "eslint-plugin-vue": "^7.0.0-0",
-    "firebase-tools": "^8.9.0"
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-vue": "^6.2.2",
+    "sass": "^1.26.5",
+    "sass-loader": "^8.0.2",
+    "vue-template-compiler": "^2.6.11"
   },
   "eslintConfig": {
     "root": true,
@@ -30,13 +33,15 @@
       "node": true
     },
     "extends": [
-      "plugin:vue/vue3-essential",
-      "eslint:recommended"
+      "plugin:vue/essential",
+      "@vue/airbnb"
     ],
     "parserOptions": {
       "parser": "babel-eslint"
     },
-    "rules": {}
+    "rules": {
+      "vue/no-unused-components": "warn"
+    }
   },
   "browserslist": [
     "> 1%",
