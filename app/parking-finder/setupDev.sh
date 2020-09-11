@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-docker build -t local-firebase:1.0 .
+docker build -t local-firebase:1.0 local-firebase
 
 docker rm --force local-firebase
 
