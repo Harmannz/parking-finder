@@ -3,6 +3,9 @@
     <div style="height: 200px; overflow: auto;">
       <p>First marker is placed at {{ withPopup.lat }}, {{ withPopup.lng }}</p>
       <p>Center is at {{ currentCenter }} and the zoom is: {{ currentZoom }}</p>
+      <button @click="addToCollection">
+        Add to collection
+      </button>
       <button @click="showLongText">
         Toggle long popup
       </button>
@@ -57,6 +60,8 @@ import {
   LMap, LTileLayer, LMarker, LPopup, LTooltip,
 } from 'vue2-leaflet';
 
+import { db } from '../db';
+
 export default {
   name: 'MyMap',
   components: {
@@ -93,6 +98,19 @@ export default {
     },
     showLongText() {
       this.showParagraph = !this.showParagraph;
+    },
+    addToCollection() {
+      // Add to firebase collection
+      const demoCollection = db.collection('demo');
+      demoCollection.add({
+        text: 'Firebase Update Demo',
+      })
+        .then((docRef) => {
+          console.log('Document written with ID: ', docRef.id);
+        })
+        .catch((error) => {
+          console.error('Error adding document: ', error);
+        });
     },
     innerClick() {
       alert('Click!');

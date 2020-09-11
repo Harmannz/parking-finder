@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "bash setupDev.sh && vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
@@ -12,7 +12,8 @@
     "firebase": "^7.19.1",
     "leaflet": "^1.6.0",
     "vue": "^2.6.11",
-    "vue2-leaflet": "^2.5.2"
+    "vue2-leaflet": "^2.5.2",
+    "vuefire": "^2.2.4"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
