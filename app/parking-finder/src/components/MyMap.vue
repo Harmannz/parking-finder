@@ -13,12 +13,17 @@
         Toggle map
       </button>
     </div>
+    <div>
+      <ul id="NearByParking">
+        <p>Found nearbyParking: {{nearbyParking.length}}</p>
+        <p>First result: {{nearbyParking[0]}}</p>
+      </ul>
+    </div>
     <l-map
       v-if="showMap"
       :zoom="zoom"
       :center="center"
       :options="mapOptions"
-      style="height: 80%"
       @update:center="centerUpdate"
       @update:zoom="zoomUpdate"
     >
@@ -60,7 +65,8 @@ import {
   LMap, LTileLayer, LMarker, LPopup, LTooltip,
 } from 'vue2-leaflet';
 
-import { db } from '../db';
+import firebase from 'firebase/app';
+import { db, geoFirestore } from '../db';
 
 export default {
   name: 'MyMap',
@@ -73,21 +79,25 @@ export default {
   },
   data() {
     return {
-      zoom: 13,
-      center: latLng(47.41322, -1.219482),
+      zoom: 18,
+      center: latLng(-41.287993, 174.778678),
       url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       attribution:
         '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      withPopup: latLng(47.41322, -1.219482),
-      withTooltip: latLng(47.41422, -1.250482),
-      currentZoom: 11.5,
-      currentCenter: latLng(47.41322, -1.219482),
+      withPopup: latLng(-41.287993, 174.778678),
+      withTooltip: latLng(-41.287993, 174.778678),
+      currentZoom: 18,
+      currentCenter: latLng(-41.287993, 174.778678),
       showParagraph: false,
       mapOptions: {
         zoomSnap: 0.5,
       },
       showMap: true,
+      nearbyParking: [],
     };
+  },
+  firestore: {
+    nearbyParking: geoFirestore.collection('geo-car-park').near({ center: new firebase.firestore.GeoPoint(-41.287993, 174.778678), radius: 3 }),
   },
   methods: {
     zoomUpdate(zoom) {
