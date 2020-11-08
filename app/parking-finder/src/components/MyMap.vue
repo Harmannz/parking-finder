@@ -96,10 +96,25 @@ export default {
       nearbyParking: [],
     };
   },
-  firestore: {
-    nearbyParking: geoFirestore.collection('geo-car-park').near({ center: new firebase.firestore.GeoPoint(-41.287993, 174.778678), radius: 3 }),
+  watch: {
+    currentCenter: {
+      immediate: true,
+      handler(oldCenter, newCenter) {
+        // fetch nearbyParking when the current center changes
+        // for now, query the database on every change.
+        // In the future it can be made smarter by caching and querying selectively.
+        this.fetchNearByParking(newCenter);
+      },
+    },
   },
   methods: {
+    fetchNearByParking(newCenter) {
+      const query = geoFirestore.collection('geo-car-park').near({ center: new firebase.firestore.GeoPoint(newCenter.lat, newCenter.lng), radius: 3 });
+      const vm = this;
+      query.get().then((value) => {
+        vm.nearbyParking = value.docs;
+      });
+    },
     zoomUpdate(zoom) {
       this.currentZoom = zoom;
     },
