@@ -6,9 +6,6 @@
       <button @click="addToCollection">
         Add to collection
       </button>
-      <button @click="showLongText">
-        Toggle long popup
-      </button>
       <button @click="showMap = !showMap">
         Toggle map
       </button>
@@ -31,30 +28,6 @@
         :url="url"
         :attribution="attribution"
       />
-      <l-marker :lat-lng="withPopup">
-        <l-popup>
-          <div @click="innerClick">
-            I am a popup
-            <p v-show="showParagraph">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
-              sed pretium nisl, ut sagittis sapien. Sed vel sollicitudin nisi.
-              Donec finibus semper metus id malesuada.
-            </p>
-          </div>
-        </l-popup>
-      </l-marker>
-      <l-marker :lat-lng="withTooltip">
-        <l-tooltip :options="{ permanent: true, interactive: true }">
-          <div @click="innerClick">
-            I am a tooltip
-            <p v-show="showParagraph">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
-              sed pretium nisl, ut sagittis sapien. Sed vel sollicitudin nisi.
-              Donec finibus semper metus id malesuada.
-            </p>
-          </div>
-        </l-tooltip>
-      </l-marker>
     </l-map>
   </div>
 </template>
@@ -84,11 +57,8 @@ export default {
       url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       attribution:
         '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      withPopup: latLng(-41.287993, 174.778678),
-      withTooltip: latLng(-41.287993, 174.778678),
       currentZoom: 18,
       currentCenter: latLng(-41.287993, 174.778678),
-      showParagraph: false,
       mapOptions: {
         zoomSnap: 0.5,
       },
@@ -121,9 +91,6 @@ export default {
     centerUpdate(center) {
       this.currentCenter = center;
     },
-    showLongText() {
-      this.showParagraph = !this.showParagraph;
-    },
     addToCollection() {
       // Add to firebase collection
       const demoCollection = db.collection('demo');
@@ -136,9 +103,6 @@ export default {
         .catch((error) => {
           console.error('Error adding document: ', error);
         });
-    },
-    innerClick() {
-      alert('Click!');
     },
   },
 };
