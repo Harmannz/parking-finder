@@ -1,7 +1,6 @@
 <template>
   <div style="height: 500px; width: 100%">
     <div style="height: 200px; overflow: auto;">
-      <p>First marker is placed at {{ withPopup.lat }}, {{ withPopup.lng }}</p>
       <p>Center is at {{ currentCenter }} and the zoom is: {{ currentZoom }}</p>
       <button @click="addToCollection">
         Add to collection
@@ -28,18 +27,36 @@
         :url="url"
         :attribution="attribution"
       />
+      <l-marker
+        v-for="parking in nearbyParking"
+        v-bind:key="parking.id"
+        :lat-lng="getLatLong(parking.data())"
+       >
+        <l-icon
+          :icon-size="iconSize"
+          :icon-anchor="iconAnchor"
+          :shadow-url="iconUrl"
+          :icon-url="iconUrl"
+        >
+        </l-icon>
+      </l-marker>
     </l-map>
   </div>
 </template>
 
 <script>
-import { latLng } from 'leaflet';
+import { Icon, latLng } from 'leaflet';
 import {
-  LMap, LTileLayer, LMarker, LPopup, LTooltip,
+  LMap, LTileLayer, LMarker, LPopup, LTooltip, LIcon,
 } from 'vue2-leaflet';
 
 import firebase from 'firebase/app';
 import { db, geoFirestore } from '../db';
+
+// eslint-disable-next-line no-underscore-dangle
+delete Icon.Default.prototype._getIconUrl;
+
+const parkingIcon = require('@/assets/parking_icon.png');
 
 export default {
   name: 'MyMap',
@@ -49,21 +66,25 @@ export default {
     LMarker,
     LPopup,
     LTooltip,
+    LIcon,
   },
   data() {
     return {
       zoom: 18,
-      center: latLng(-41.287993, 174.778678),
+      center: latLng(-41.313286, 174.780518),
       url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       attribution:
         '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       currentZoom: 18,
-      currentCenter: latLng(-41.287993, 174.778678),
+      currentCenter: latLng(-41.313286, 174.780518),
       mapOptions: {
         zoomSnap: 0.5,
       },
       showMap: true,
       nearbyParking: [],
+      iconUrl: parkingIcon,
+      iconSize: [32, 37],
+      iconAnchor: [16, 37],
     };
   },
   watch: {
@@ -79,7 +100,7 @@ export default {
   },
   methods: {
     fetchNearByParking(newCenter) {
-      const query = geoFirestore.collection('geo-car-park').near({ center: new firebase.firestore.GeoPoint(newCenter.lat, newCenter.lng), radius: 3 });
+      const query = geoFirestore.collection('geo-car-park').near({ center: new firebase.firestore.GeoPoint(newCenter.lat, newCenter.lng), radius: 0.1 });
       const vm = this;
       query.get().then((value) => {
         vm.nearbyParking = value.docs;
@@ -87,6 +108,9 @@ export default {
     },
     zoomUpdate(zoom) {
       this.currentZoom = zoom;
+    },
+    getLatLong(data) {
+      return latLng(data.coordinates.latitude, data.coordinates.longitude);
     },
     centerUpdate(center) {
       this.currentCenter = center;

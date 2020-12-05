@@ -22,3 +22,6 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+#### Attribution
+Parking icon attributed to Vectors Market from https://www.flaticon.com/authors/vectors-market
