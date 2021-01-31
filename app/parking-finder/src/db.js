@@ -3,13 +3,19 @@ import 'firebase/firestore';
 
 const { GeoFirestore } = require('geofirestore');
 
+// load environment config. Need to use dotenv to import process.env variables because this file
+// will not automatically load the variables from vuejs --mode attribute.
+const dotenv = require('dotenv');
+
+dotenv.config();
+
 // Get a Firestore instance
 export const db = firebase
   .initializeApp(
     {
-      projectId: 'wcc-carpark',
-      databaseURL: 'http://localhost:9090',
-      ssl: false,
+      projectId: process.env.VUE_APP_FIREBASE_PROJECT_ID,
+      databaseURL: process.env.VUE_APP_FIREBASE_DATABASE_URL,
+      ssl: process.env.VUE_APP_FIREBASE_SSL,
     },
   )
   .firestore();
