@@ -2,9 +2,6 @@
   <div style="height: 500px; width: 100%">
     <div style="height: 200px; overflow: auto;">
       <p>Center is at {{ currentCenter }} and the zoom is: {{ currentZoom }}</p>
-      <button @click="addToCollection">
-        Add to collection
-      </button>
       <button @click="showMap = !showMap">
         Toggle map
       </button>
@@ -51,7 +48,7 @@ import {
 } from 'vue2-leaflet';
 
 import firebase from 'firebase/app';
-import { db, geoFirestore } from '../db';
+import { geoFirestore } from '../db';
 
 // eslint-disable-next-line no-underscore-dangle
 delete Icon.Default.prototype._getIconUrl;
@@ -114,19 +111,6 @@ export default {
     },
     centerUpdate(center) {
       this.currentCenter = center;
-    },
-    addToCollection() {
-      // Add to firebase collection
-      const demoCollection = db.collection('demo');
-      demoCollection.add({
-        text: 'Firebase Update Demo',
-      })
-        .then((docRef) => {
-          console.log('Document written with ID: ', docRef.id);
-        })
-        .catch((error) => {
-          console.error('Error adding document: ', error);
-        });
     },
   },
 };
