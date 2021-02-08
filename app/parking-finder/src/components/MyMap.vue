@@ -14,15 +14,15 @@
     </div>
     <l-map
       v-if="showMap"
-      :zoom="zoom"
-      :center="center"
-      :options="mapOptions"
+      :zoom="mapAttributes.zoom"
+      :center="mapAttributes.center"
+      :options="mapAttributes.mapOptions"
       @update:center="centerUpdate"
       @update:zoom="zoomUpdate"
     >
       <l-tile-layer
-        :url="url"
-        :attribution="attribution"
+        :url="mapAttributes.url"
+        :attribution="mapAttributes.attribution"
       />
       <l-marker
         v-for="parking in nearbyParking"
@@ -30,10 +30,10 @@
         :lat-lng="getLatLong(parking.data())"
        >
         <l-icon
-          :icon-size="iconSize"
-          :icon-anchor="iconAnchor"
-          :shadow-url="iconUrl"
-          :icon-url="iconUrl"
+          :icon-size="mapAttributes.iconSize"
+          :icon-anchor="mapAttributes.iconAnchor"
+          :shadow-url="mapAttributes.iconUrl"
+          :icon-url="mapAttributes.iconUrl"
         >
         </l-icon>
       </l-marker>
@@ -67,21 +67,24 @@ export default {
   },
   data() {
     return {
-      zoom: 18,
-      center: latLng(-41.313286, 174.780518),
-      url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-      attribution:
-        '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+      noLocation: true,
       currentZoom: 18,
       currentCenter: latLng(-41.313286, 174.780518),
-      mapOptions: {
-        zoomSnap: 0.5,
-      },
       showMap: true,
       nearbyParking: [],
-      iconUrl: parkingIcon,
-      iconSize: [32, 37],
-      iconAnchor: [16, 37],
+      mapAttributes: {
+        zoom: 18,
+        center: latLng(-41.313286, 174.780518),
+        url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        attribution:
+          '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+        iconUrl: parkingIcon,
+        iconSize: [32, 37],
+        iconAnchor: [16, 37],
+        mapOptions: {
+          zoomSnap: 0.5,
+        },
+      },
     };
   },
   watch: {
@@ -104,7 +107,7 @@ export default {
       });
     },
     zoomUpdate(zoom) {
-      this.currentZoom = zoom;
+      this.mapAttributes.currentZoom = zoom;
     },
     getLatLong(data) {
       return latLng(data.coordinates.latitude, data.coordinates.longitude);
