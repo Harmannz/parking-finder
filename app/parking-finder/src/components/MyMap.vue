@@ -87,9 +87,12 @@ export default {
       },
     };
   },
+  beforeMount() {
+    this.fetchCurrentLocation();
+    this.currentCenter = this.mapAttributes.center;
+  },
   watch: {
     currentCenter: {
-      immediate: true,
       handler(oldCenter, newCenter) {
         // fetch nearbyParking when the current center changes
         // for now, query the database on every change.
@@ -104,6 +107,18 @@ export default {
       const vm = this;
       query.get().then((value) => {
         vm.nearbyParking = value.docs;
+      });
+    },
+    fetchCurrentLocation() {
+      navigator.geolocation.getCurrentPosition((position) => {
+        this.mapAttributes.center = latLng(position.coords.latitude, position.coords.longitude);
+      }, () => {
+        // failed to fetch current location. Potentially send a message to user and default
+        this.mapAttributes.center = latLng(-41.313286, 174.780518);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 5000,
       });
     },
     zoomUpdate(zoom) {
