@@ -5,7 +5,7 @@
       :zoom="mapAttributes.zoom"
       :center="mapAttributes.center"
       :options="mapAttributes.mapOptions"
-      @update:center="centerUpdate"m
+      @update:center="centerUpdate"
       @update:zoom="zoomUpdate"
     >
       <l-tile-layer
