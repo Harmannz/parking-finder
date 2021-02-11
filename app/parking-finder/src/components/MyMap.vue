@@ -1,23 +1,11 @@
 <template>
-  <div style="height: 500px; width: 100%">
-    <div style="height: 200px; overflow: auto;">
-      <p>Center is at {{ currentCenter }} and the zoom is: {{ currentZoom }}</p>
-      <button @click="showMap = !showMap">
-        Toggle map
-      </button>
-    </div>
-    <div>
-      <ul id="NearByParking">
-        <p>Found nearbyParking: {{nearbyParking.length}}</p>
-        <p>First result: {{nearbyParking[0]}}</p>
-      </ul>
-    </div>
+  <div id="parkingMap">
     <l-map
       v-if="showMap"
       :zoom="mapAttributes.zoom"
       :center="mapAttributes.center"
       :options="mapAttributes.mapOptions"
-      @update:center="centerUpdate"
+      @update:center="centerUpdate"m
       @update:zoom="zoomUpdate"
     >
       <l-tile-layer
@@ -133,3 +121,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+  #parkingMap {
+    height: 100%;
+  }
+</style>
