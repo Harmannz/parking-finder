@@ -84,6 +84,7 @@ export default {
           locateOptions: {
             enableHighAccuracy: true,
           },
+          returnToPrevBounds: true,
         },
       },
     };
