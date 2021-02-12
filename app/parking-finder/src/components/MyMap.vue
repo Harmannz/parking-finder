@@ -7,7 +7,11 @@
       :options="mapAttributes.mapOptions"
       @update:center="centerUpdate"
       @update:zoom="zoomUpdate"
+      ref="parkingMap"
     >
+      <v-locatecontrol
+        :options="mapAttributes.locateControlOptions"
+      />
       <l-tile-layer
         :url="mapAttributes.url"
         :attribution="mapAttributes.attribution"
@@ -34,6 +38,7 @@ import { Icon, latLng } from 'leaflet';
 import {
   LMap, LTileLayer, LMarker, LPopup, LTooltip, LIcon,
 } from 'vue2-leaflet';
+import Vue2LeafletLocatecontrol from 'vue2-leaflet-locatecontrol/Vue2LeafletLocatecontrol.vue';
 
 import firebase from 'firebase/app';
 import { geoFirestore } from '../db';
@@ -52,6 +57,7 @@ export default {
     LPopup,
     LTooltip,
     LIcon,
+    'v-locatecontrol': Vue2LeafletLocatecontrol,
   },
   data() {
     return {
@@ -71,6 +77,13 @@ export default {
         iconAnchor: [16, 37],
         mapOptions: {
           zoomSnap: 0.5,
+        },
+        locateControlOptions: {
+          drawCircle: true,
+          initialZoomLevel: 18,
+          locateOptions: {
+            enableHighAccuracy: true,
+          },
         },
       },
     };
