@@ -138,6 +138,7 @@ export default {
 </script>
 
 <style lang="scss">
+  @import "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css";
   #parkingMap {
     height: 100%;
   }
