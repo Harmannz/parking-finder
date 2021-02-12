@@ -5,6 +5,7 @@
       :zoom="mapAttributes.zoom"
       :center="mapAttributes.center"
       :options="mapAttributes.mapOptions"
+      :minZoom="16"
       @update:center="centerUpdate"
       @update:zoom="zoomUpdate"
       ref="parkingMap"
