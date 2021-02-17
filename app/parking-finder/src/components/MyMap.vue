@@ -96,7 +96,7 @@ export default {
   },
   watch: {
     currentCenter: {
-      handler(oldCenter, newCenter) {
+      handler(newCenter) {
         // fetch nearbyParking when the current center changes
         // for now, query the database on every change.
         // In the future it can be made smarter by caching and querying selectively.
