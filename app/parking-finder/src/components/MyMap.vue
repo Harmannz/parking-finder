@@ -8,8 +8,30 @@
       :minZoom="16"
       @update:center="centerUpdate"
       @update:zoom="zoomUpdate"
+      @ready="attachSidebar"
       ref="parkingMap"
     >
+      <l-control>
+        <div id="sidebar" class="leaflet-sidebar collapsed">
+          <!-- Nav tabs -->
+          <div class="leaflet-sidebar-tabs">
+            <ul role="tablist"> <!-- top aligned tabs -->
+              <li><a href="#home" role="tab"><i class="fa fa-bars"></i></a></li>
+            </ul>
+          </div>
+
+          <!-- Tab panes -->
+          <div class="leaflet-sidebar-content">
+            <div class="leaflet-sidebar-pane" id="home">
+              <h1 class="leaflet-sidebar-header">
+                sidebar-v2
+                <div class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></div>
+              </h1>
+              <p>A responsive sidebar for mapping libraries</p>
+            </div>
+          </div>
+        </div>
+      </l-control>
       <v-locatecontrol
         :options="mapAttributes.locateControlOptions"
       />
@@ -37,8 +59,10 @@
 <script>
 import { Icon, latLng } from 'leaflet';
 import {
-  LMap, LTileLayer, LMarker, LPopup, LTooltip, LIcon,
+  LMap, LTileLayer, LMarker, LPopup, LTooltip, LIcon, LControl,
 } from 'vue2-leaflet';
+import 'leaflet-sidebar-v2';
+import 'leaflet-sidebar-v2/css/leaflet-sidebar.css';
 import Vue2LeafletLocatecontrol from 'vue2-leaflet-locatecontrol/Vue2LeafletLocatecontrol.vue';
 
 import firebase from 'firebase/app';
@@ -59,6 +83,7 @@ export default {
     LTooltip,
     LIcon,
     'v-locatecontrol': Vue2LeafletLocatecontrol,
+    LControl,
   },
   data() {
     return {
@@ -105,6 +130,16 @@ export default {
     },
   },
   methods: {
+    attachSidebar(mapObject) {
+      const sidebar = window.L.control.sidebar({
+        autopan: false, // whether to maintain the centered map point when opening the sidebar
+        closeButton: true, // whether t add a close button to the panes
+        container: 'sidebar', // the DOM container or #ID of a predefined sidebar container that should be used
+        position: 'left', // left or right
+      });
+
+      sidebar.addTo(mapObject);
+    },
     fetchNearByParking(newCenter) {
       const query = geoFirestore.collection('geo-car-park').near({ center: new firebase.firestore.GeoPoint(newCenter.lat, newCenter.lng), radius: 0.2 });
       const vm = this;
@@ -141,5 +176,11 @@ export default {
   @import "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css";
   #parkingMap {
     height: 100%;
+  }
+  #sidebar {
+    height:100%;
+  }
+  #sidebar.collapsed {
+    height: 40px;
   }
 </style>
