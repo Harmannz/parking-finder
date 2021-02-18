@@ -106,10 +106,9 @@ export default {
   },
   methods: {
     fetchNearByParking(newCenter) {
-      const getLimit = parseInt(process.env.VUE_APP_FIREBASE_GET_DOCUMENT_LIMIT, 10);
-      const query = geoFirestore.collection('geo-car-park').near({ center: new firebase.firestore.GeoPoint(newCenter.lat, newCenter.lng), radius: 0.2, limit: getLimit });
+      const query = geoFirestore.collection('geo-car-park').near({ center: new firebase.firestore.GeoPoint(newCenter.lat, newCenter.lng), radius: 0.2 });
       const vm = this;
-      query.limit(getLimit).get().then((value) => {
+      query.get().then((value) => {
         vm.nearbyParking = value.docs;
       });
     },
