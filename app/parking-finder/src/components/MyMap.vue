@@ -178,7 +178,12 @@ export default {
     height: 100%;
   }
   #sidebar {
+    text-align: justify;
     height:100%;
+    ul {
+      // vuetify adds left padding which we dont want
+      padding-left: 0;
+    }
   }
   #sidebar.collapsed {
     height: 40px;
