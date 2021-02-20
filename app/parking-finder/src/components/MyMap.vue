@@ -29,14 +29,23 @@
               </h1>
               <p>Project to help find nearby car parks in Wellington greater area.</p>
               <h2>Filter parking by purpose</h2>
-              <v-switch
-                v-model="checkbox"
-                disabled
-              ></v-switch> Disabled
+              <v-switch v-model="getDisabledCarParks">
+                <template v-slot:label>
+                  Disabled car parks
+                </template>
+              </v-switch>
               <h2>Filter parking by orientation</h2>
-              <p>...</p>
+              <v-switch disabled >
+                <template v-slot:label>
+                  Angle parking
+                </template>
+              </v-switch>
               <h2>Filter parking by meter</h2>
-              <p>...</p>
+              <v-switch disabled>
+                <template v-slot:label>
+                  Metered parking
+                </template>
+              </v-switch>
             </div>
           </div>
         </div>
@@ -101,6 +110,7 @@ export default {
       currentCenter: latLng(-41.313286, 174.780518),
       showMap: true,
       nearbyParking: [],
+      getDisabledCarParks: true,
       mapAttributes: {
         zoom: 18,
         center: latLng(-41.313286, 174.780518),
