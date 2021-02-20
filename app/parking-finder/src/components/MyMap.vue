@@ -108,7 +108,7 @@ export default {
       currentCenter: latLng(-41.313286, 174.780518),
       showMap: true,
       nearbyParking: [],
-      getDisabledCarParks: true,
+      typesOfCarParksToFetch: ['Disabled'],
       mapAttributes: {
         zoom: 18,
         center: latLng(-41.313286, 174.780518),
@@ -138,11 +138,16 @@ export default {
   },
   watch: {
     currentCenter: {
-      handler(newCenter) {
+      handler() {
         // fetch nearbyParking when the current center changes
         // for now, query the database on every change.
         // In the future it can be made smarter by caching and querying selectively.
-        this.fetchNearByParking(newCenter);
+        this.fetchNearByParking();
+      },
+    },
+    typesOfCarParksToFetch: {
+      handler() {
+        this.fetchNearByParking();
       },
     },
   },
@@ -157,8 +162,17 @@ export default {
 
       sidebar.addTo(mapObject);
     },
-    fetchNearByParking(newCenter) {
-      const query = geoFirestore.collection('geo-car-park').near({ center: new firebase.firestore.GeoPoint(newCenter.lat, newCenter.lng), radius: 0.2 });
+    fetchNearByParking() {
+      let query = geoFirestore.collection('geo-car-park')
+        .near({
+          center: new firebase.firestore.GeoPoint(this.currentCenter.lat, this.currentCenter.lng),
+          radius: 0.2,
+        });
+
+      if (this.typesOfCarParksToFetch.length > 0) {
+        query = query.where('purpose', 'in', this.typesOfCarParksToFetch);
+      }
+
       const vm = this;
       query.get().then((value) => {
         vm.nearbyParking = value.docs;
