@@ -77,7 +77,7 @@
 <script>
 import { Icon, latLng } from 'leaflet';
 import {
-  LMap, LTileLayer, LMarker, LPopup, LTooltip, LIcon, LControl,
+  LMap, LTileLayer, LMarker, LIcon, LControl,
 } from 'vue2-leaflet';
 import 'leaflet-sidebar-v2';
 import 'leaflet-sidebar-v2/css/leaflet-sidebar.css';
@@ -97,8 +97,6 @@ export default {
     LMap,
     LTileLayer,
     LMarker,
-    LPopup,
-    LTooltip,
     LIcon,
     'v-locatecontrol': Vue2LeafletLocatecontrol,
     LControl,
