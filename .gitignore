@@ -7,8 +7,6 @@ target
 node_modules
 npm-debug.log
 
-package-lock.json
-
 *debug.log
 
 .firebaseconfig
