@@ -27,7 +27,16 @@
                 sidebar-v2
                 <div class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></div>
               </h1>
-              <p>A responsive sidebar for mapping libraries</p>
+              <p>Project to help find nearby car parks in Wellington greater area.</p>
+              <h2>Filter parking by purpose</h2>
+              <v-switch
+                v-model="checkbox"
+                disabled
+              ></v-switch> Disabled
+              <h2>Filter parking by orientation</h2>
+              <p>...</p>
+              <h2>Filter parking by meter</h2>
+              <p>...</p>
             </div>
           </div>
         </div>
