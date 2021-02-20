@@ -8,8 +8,48 @@
       :minZoom="16"
       @update:center="centerUpdate"
       @update:zoom="zoomUpdate"
+      @ready="attachSidebar"
       ref="parkingMap"
     >
+      <l-control>
+        <div id="sidebar" class="leaflet-sidebar collapsed">
+          <!-- Nav tabs -->
+          <div class="leaflet-sidebar-tabs">
+            <ul role="tablist"> <!-- top aligned tabs -->
+              <li><a href="#home" role="tab"><i class="fa fa-bars"></i></a></li>
+            </ul>
+          </div>
+
+          <!-- Tab panes -->
+          <div class="leaflet-sidebar-content">
+            <div class="leaflet-sidebar-pane" id="home">
+              <h1 class="leaflet-sidebar-header">
+                sidebar-v2
+                <div class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></div>
+              </h1>
+              <p>Project to help find nearby car parks in Wellington greater area.</p>
+              <h2>Filter parking by purpose</h2>
+              <v-switch v-model="getDisabledCarParks">
+                <template v-slot:label>
+                  Disabled car parks
+                </template>
+              </v-switch>
+              <h2>Filter parking by orientation</h2>
+              <v-switch disabled >
+                <template v-slot:label>
+                  Angle parking
+                </template>
+              </v-switch>
+              <h2>Filter parking by meter</h2>
+              <v-switch disabled>
+                <template v-slot:label>
+                  Metered parking
+                </template>
+              </v-switch>
+            </div>
+          </div>
+        </div>
+      </l-control>
       <v-locatecontrol
         :options="mapAttributes.locateControlOptions"
       />
@@ -37,8 +77,10 @@
 <script>
 import { Icon, latLng } from 'leaflet';
 import {
-  LMap, LTileLayer, LMarker, LPopup, LTooltip, LIcon,
+  LMap, LTileLayer, LMarker, LIcon, LControl,
 } from 'vue2-leaflet';
+import 'leaflet-sidebar-v2';
+import 'leaflet-sidebar-v2/css/leaflet-sidebar.css';
 import Vue2LeafletLocatecontrol from 'vue2-leaflet-locatecontrol/Vue2LeafletLocatecontrol.vue';
 
 import firebase from 'firebase/app';
@@ -55,10 +97,9 @@ export default {
     LMap,
     LTileLayer,
     LMarker,
-    LPopup,
-    LTooltip,
     LIcon,
     'v-locatecontrol': Vue2LeafletLocatecontrol,
+    LControl,
   },
   data() {
     return {
@@ -67,6 +108,7 @@ export default {
       currentCenter: latLng(-41.313286, 174.780518),
       showMap: true,
       nearbyParking: [],
+      getDisabledCarParks: true,
       mapAttributes: {
         zoom: 18,
         center: latLng(-41.313286, 174.780518),
@@ -105,11 +147,20 @@ export default {
     },
   },
   methods: {
+    attachSidebar(mapObject) {
+      const sidebar = window.L.control.sidebar({
+        autopan: false, // whether to maintain the centered map point when opening the sidebar
+        closeButton: true, // whether t add a close button to the panes
+        container: 'sidebar', // the DOM container or #ID of a predefined sidebar container that should be used
+        position: 'left', // left or right
+      });
+
+      sidebar.addTo(mapObject);
+    },
     fetchNearByParking(newCenter) {
-      const getLimit = parseInt(process.env.VUE_APP_FIREBASE_GET_DOCUMENT_LIMIT, 10);
-      const query = geoFirestore.collection('geo-car-park').near({ center: new firebase.firestore.GeoPoint(newCenter.lat, newCenter.lng), radius: 0.2, limit: getLimit });
+      const query = geoFirestore.collection('geo-car-park').near({ center: new firebase.firestore.GeoPoint(newCenter.lat, newCenter.lng), radius: 0.2 });
       const vm = this;
-      query.limit(getLimit).get().then((value) => {
+      query.get().then((value) => {
         vm.nearbyParking = value.docs;
       });
     },
@@ -142,5 +193,16 @@ export default {
   @import "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css";
   #parkingMap {
     height: 100%;
+  }
+  #sidebar {
+    text-align: justify;
+    height:100%;
+    ul {
+      // vuetify adds left padding which we dont want
+      padding-left: 0;
+    }
+  }
+  #sidebar.collapsed {
+    height: 40px;
   }
 </style>
