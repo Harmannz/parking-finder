@@ -7,6 +7,9 @@ Project to help find nearby car parks in Wellington greater area.
 
 MVP is to restrict the parking to just disabled car parks.
 
+## Backlog
+See github todo project: https://github.com/Harmannz/parking-finder/projects/1 for current backlog items.
+
 # Data Processing
 
 The car parks dataset sourced from [WCC Open Data](https://data-wcc.opendata.arcgis.com/datasets/a1ec0e82e8c2471b97607bd7e08622b5_0) contains car parking data and nztm coordinates.
