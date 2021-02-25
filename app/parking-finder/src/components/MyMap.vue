@@ -50,7 +50,7 @@
               ></v-switch>
               <v-divider></v-divider>
 
-              <h2>Filter parking by orientation</h2>
+              <h2>[WIP] Filter parking by orientation</h2>
               <p>Unselecting all will fetch all car parks.</p>
               <v-switch disabled >
                 <template v-slot:label>
@@ -59,7 +59,7 @@
               </v-switch>
               <v-divider></v-divider>
 
-              <h2>Filter parking by orientation</h2>
+              <h2>[WIP] Filter parking by type</h2>
               <p>Unselecting all will fetch all car parks.</p>
               <v-switch disabled >
                 <template v-slot:label>
