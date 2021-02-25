@@ -66,6 +66,18 @@
                   Metered parking
                 </template>
               </v-switch>
+
+              <h2>Search radius</h2>
+              <v-slider
+                v-model="searchProps.searchRadiusInMeters"
+                :tick-labels="searchProps.tickLabels"
+                :max="250"
+                :min="100"
+                step="50"
+                ticks="always"
+                :tick-size="searchProps.tickLabels.length"
+              ></v-slider>
+
               <v-divider></v-divider>
 
               <v-list-item class="pl-0" three-line>
@@ -168,10 +180,17 @@ export default {
       currentZoom: 18,
       currentCenter: latLng(-41.313286, 174.780518),
       showMap: true,
+      showSidebar: false,
       nearbyParking: [],
       typesOfCarParksToFetch: ['Disabled'],
       searchProps: {
         searchRadiusInMeters: 100,
+        tickLabels: [
+          '100m',
+          '150m',
+          '200m',
+          '250m',
+        ],
       },
       mapAttributes: {
         zoom: 18,
@@ -213,6 +232,11 @@ export default {
         this.fetchNearByParking();
       },
     },
+    'searchProps.searchRadiusInMeters': {
+      handler() {
+        this.fetchNearByParking();
+      },
+    },
   },
   methods: {
     attachSidebar(mapObject) {
@@ -224,6 +248,14 @@ export default {
       });
 
       sidebar.addTo(mapObject);
+
+      sidebar.on('opening', () => {
+        this.showSidebar = true;
+      });
+
+      sidebar.on('closing', () => {
+        this.showSidebar = false;
+      });
     },
     fetchNearByParking() {
       let query = geoFirestore.collection('geo-car-park')
