@@ -170,7 +170,7 @@ export default {
         url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         attribution:
           '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-        iconSize: [32, 37],
+        iconSize: [40, 40],
         iconAnchor: [16, 37],
         mapOptions: {
           zoomSnap: 0.5,
