@@ -182,7 +182,7 @@ export default {
       showMap: true,
       showSidebar: false,
       nearbyParking: [],
-      typesOfCarParksToFetch: ['Disabled'],
+      typesOfCarParksToFetch: ['Disabled', 'Motorcycle'],
       searchProps: {
         searchRadiusInMeters: 100,
         tickLabels: [
