@@ -108,6 +108,11 @@
       <v-locatecontrol
         :options="mapAttributes.locateControlOptions"
       />
+      <l-circle
+        v-if="showSidebar"
+        :lat-lng="currentCenter"
+        :radius="searchProps.searchRadiusInMeters"
+      />
       <l-tile-layer
         :url="mapAttributes.url"
         :attribution="mapAttributes.attribution"
@@ -115,7 +120,7 @@
       <l-marker
         v-for="parking in nearbyParking"
         v-bind:key="parking.id"
-        :lat-lng="getLatLong(parking.data())"
+        :lat-lng="[parking.data().coordinates.latitude, parking.data().coordinates.longitude]"
        >
         <l-icon
           :icon-size="mapAttributes.iconSize"
@@ -131,7 +136,7 @@
 <script>
 import { Icon, latLng } from 'leaflet';
 import {
-  LMap, LTileLayer, LMarker, LIcon, LControl,
+  LMap, LTileLayer, LMarker, LIcon, LControl, LCircle,
 } from 'vue2-leaflet';
 import 'leaflet-sidebar-v2';
 import Vue2LeafletLocatecontrol from 'vue2-leaflet-locatecontrol/Vue2LeafletLocatecontrol.vue';
@@ -155,6 +160,7 @@ export default {
     LIcon,
     'v-locatecontrol': Vue2LeafletLocatecontrol,
     LControl,
+    LCircle,
   },
   data() {
     return {
@@ -164,6 +170,9 @@ export default {
       showMap: true,
       nearbyParking: [],
       typesOfCarParksToFetch: ['Disabled'],
+      searchProps: {
+        searchRadiusInMeters: 100,
+      },
       mapAttributes: {
         zoom: 18,
         center: latLng(-41.313286, 174.780518),
@@ -220,7 +229,7 @@ export default {
       let query = geoFirestore.collection('geo-car-park')
         .near({
           center: new firebase.firestore.GeoPoint(this.currentCenter.lat, this.currentCenter.lng),
-          radius: 0.2,
+          radius: this.searchProps.searchRadiusInMeters / 1000,
         });
 
       if (this.typesOfCarParksToFetch.length > 0) {
