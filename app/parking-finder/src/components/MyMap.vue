@@ -120,8 +120,7 @@
         <l-icon
           :icon-size="mapAttributes.iconSize"
           :icon-anchor="mapAttributes.iconAnchor"
-          :shadow-url="mapAttributes.iconUrl"
-          :icon-url="mapAttributes.iconUrl"
+          :icon-url="getIconUrl(parking.data().purpose)"
         >
         </l-icon>
       </l-marker>
@@ -143,7 +142,9 @@ import { geoFirestore } from '../db';
 // eslint-disable-next-line no-underscore-dangle
 delete Icon.Default.prototype._getIconUrl;
 
-const parkingIcon = require('@/assets/parking_icon.png');
+const ParkingIcon = require('@/assets/parking.svg');
+const DisabledIcon = require('@/assets/disabled.svg');
+const MotorcycleIcon = require('@/assets/motorbike.svg');
 
 export default {
   name: 'MyMap',
@@ -169,7 +170,6 @@ export default {
         url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         attribution:
           '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-        iconUrl: parkingIcon,
         iconSize: [32, 37],
         iconAnchor: [16, 37],
         mapOptions: {
@@ -249,6 +249,17 @@ export default {
     },
     getLatLong(data) {
       return latLng(data.coordinates.latitude, data.coordinates.longitude);
+    },
+    getIconUrl(purpose) {
+      // switch case for different parkings. Default to typical parking icon
+      switch (purpose) {
+        case 'Disabled':
+          return DisabledIcon;
+        case 'Motorcycle':
+          return MotorcycleIcon;
+        default:
+          return ParkingIcon;
+      }
     },
     centerUpdate(center) {
       this.currentCenter = center;
