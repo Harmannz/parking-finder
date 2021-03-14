@@ -29,10 +29,7 @@ const { Timestamp, GeoPoint } = firebase.firestore;
 export { Timestamp, GeoPoint };
 
 // ADD THESE LINES
-if (window.location.hostname === 'localhost') {
-  console.log('localhost detected!');
-  db.settings({
-    host: 'localhost:9090',
-    ssl: false,
-  });
-}
+db.settings({
+  host: process.env.VUE_APP_FIREBASE_DATABASE_HOST,
+  ssl: process.env.VUE_APP_FIREBASE_SSL === 'true',
+});
