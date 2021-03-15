@@ -1,0 +1,13 @@
+version: "3.9"
+services:
+  backend:
+    build:
+      context: local-firebase
+    ports:
+      - "9090:9090"
+  web:
+    build: .
+    ports:
+        - "80:80"
+    depends_on:
+      - backend

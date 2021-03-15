@@ -50,7 +50,7 @@
               ></v-switch>
               <v-divider></v-divider>
 
-              <h2>Filter parking by orientation</h2>
+              <h2>[WIP] Filter parking by orientation</h2>
               <p>Unselecting all will fetch all car parks.</p>
               <v-switch disabled >
                 <template v-slot:label>
@@ -59,13 +59,25 @@
               </v-switch>
               <v-divider></v-divider>
 
-              <h2>Filter parking by orientation</h2>
+              <h2>[WIP] Filter parking by type</h2>
               <p>Unselecting all will fetch all car parks.</p>
               <v-switch disabled >
                 <template v-slot:label>
                   Metered parking
                 </template>
               </v-switch>
+
+              <h2>Search radius</h2>
+              <v-slider
+                v-model="searchProps.searchRadiusInMeters"
+                :tick-labels="searchProps.tickLabels"
+                :max="250"
+                :min="100"
+                step="50"
+                ticks="always"
+                :tick-size="searchProps.tickLabels.length"
+              ></v-slider>
+
               <v-divider></v-divider>
 
               <v-list-item class="pl-0" three-line>
@@ -108,6 +120,11 @@
       <v-locatecontrol
         :options="mapAttributes.locateControlOptions"
       />
+      <l-circle
+        v-if="showSidebar"
+        :lat-lng="currentCenter"
+        :radius="searchProps.searchRadiusInMeters"
+      />
       <l-tile-layer
         :url="mapAttributes.url"
         :attribution="mapAttributes.attribution"
@@ -115,13 +132,12 @@
       <l-marker
         v-for="parking in nearbyParking"
         v-bind:key="parking.id"
-        :lat-lng="getLatLong(parking.data())"
+        :lat-lng="[parking.data().coordinates.latitude, parking.data().coordinates.longitude]"
        >
         <l-icon
           :icon-size="mapAttributes.iconSize"
           :icon-anchor="mapAttributes.iconAnchor"
-          :shadow-url="mapAttributes.iconUrl"
-          :icon-url="mapAttributes.iconUrl"
+          :icon-url="getIconUrl(parking.data().purpose)"
         >
         </l-icon>
       </l-marker>
@@ -132,7 +148,7 @@
 <script>
 import { Icon, latLng } from 'leaflet';
 import {
-  LMap, LTileLayer, LMarker, LIcon, LControl,
+  LMap, LTileLayer, LMarker, LIcon, LControl, LCircle,
 } from 'vue2-leaflet';
 import 'leaflet-sidebar-v2';
 import Vue2LeafletLocatecontrol from 'vue2-leaflet-locatecontrol/Vue2LeafletLocatecontrol.vue';
@@ -143,7 +159,9 @@ import { geoFirestore } from '../db';
 // eslint-disable-next-line no-underscore-dangle
 delete Icon.Default.prototype._getIconUrl;
 
-const parkingIcon = require('@/assets/parking_icon.png');
+const ParkingIcon = require('@/assets/parking.svg');
+const DisabledIcon = require('@/assets/disabled.svg');
+const MotorcycleIcon = require('@/assets/motorbike.svg');
 
 export default {
   name: 'MyMap',
@@ -154,6 +172,7 @@ export default {
     LIcon,
     'v-locatecontrol': Vue2LeafletLocatecontrol,
     LControl,
+    LCircle,
   },
   data() {
     return {
@@ -161,16 +180,25 @@ export default {
       currentZoom: 18,
       currentCenter: latLng(-41.313286, 174.780518),
       showMap: true,
+      showSidebar: false,
       nearbyParking: [],
-      typesOfCarParksToFetch: ['Disabled'],
+      typesOfCarParksToFetch: ['Disabled', 'Motorcycle'],
+      searchProps: {
+        searchRadiusInMeters: 100,
+        tickLabels: [
+          '100m',
+          '150m',
+          '200m',
+          '250m',
+        ],
+      },
       mapAttributes: {
         zoom: 18,
         center: latLng(-41.313286, 174.780518),
         url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         attribution:
           '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-        iconUrl: parkingIcon,
-        iconSize: [32, 37],
+        iconSize: [40, 40],
         iconAnchor: [16, 37],
         mapOptions: {
           zoomSnap: 0.5,
@@ -204,6 +232,11 @@ export default {
         this.fetchNearByParking();
       },
     },
+    'searchProps.searchRadiusInMeters': {
+      handler() {
+        this.fetchNearByParking();
+      },
+    },
   },
   methods: {
     attachSidebar(mapObject) {
@@ -215,12 +248,20 @@ export default {
       });
 
       sidebar.addTo(mapObject);
+
+      sidebar.on('opening', () => {
+        this.showSidebar = true;
+      });
+
+      sidebar.on('closing', () => {
+        this.showSidebar = false;
+      });
     },
     fetchNearByParking() {
       let query = geoFirestore.collection('geo-car-park')
         .near({
           center: new firebase.firestore.GeoPoint(this.currentCenter.lat, this.currentCenter.lng),
-          radius: 0.2,
+          radius: this.searchProps.searchRadiusInMeters / 1000,
         });
 
       if (this.typesOfCarParksToFetch.length > 0) {
@@ -249,6 +290,17 @@ export default {
     },
     getLatLong(data) {
       return latLng(data.coordinates.latitude, data.coordinates.longitude);
+    },
+    getIconUrl(purpose) {
+      // switch case for different parkings. Default to typical parking icon
+      switch (purpose) {
+        case 'Disabled':
+          return DisabledIcon;
+        case 'Motorcycle':
+          return MotorcycleIcon;
+        default:
+          return ParkingIcon;
+      }
     },
     centerUpdate(center) {
       this.currentCenter = center;
