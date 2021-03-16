@@ -32,6 +32,7 @@ jobs:
         with:
           publish-dir: './app/parking-finder/dist'
           production-branch: master
+          production-deploy: true
           deploy-message: "Deploy from GitHub Actions"
           enable-pull-request-comment: false
           enable-commit-comment: false
