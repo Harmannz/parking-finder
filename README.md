@@ -1,5 +1,7 @@
 # WCC Disabled Car Parking Service
-![Data Processing scripts](https://github.com/Harmannz/parking-finder/workflows/Data%20Processing%20scripts/badge.svg)
+[![Data Processing scripts](https://github.com/Harmannz/parking-finder/actions/workflows/docker-image.yml/badge.svg)](https://github.com/Harmannz/parking-finder/actions/workflows/docker-image.yml)
+
+[![App - Build](https://github.com/Harmannz/parking-finder/actions/workflows/node.js-build.yml/badge.svg)](https://github.com/Harmannz/parking-finder/actions/workflows/node.js-build.yml)
 
 Project to help find nearby car parks in Wellington greater area.
 
