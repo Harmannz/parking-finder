@@ -32,4 +32,5 @@ export { Timestamp, GeoPoint };
 db.settings({
   host: process.env.VUE_APP_FIREBASE_DATABASE_HOST,
   ssl: process.env.VUE_APP_FIREBASE_SSL === 'true',
+  experimentalForceLongPolling: true
 });
