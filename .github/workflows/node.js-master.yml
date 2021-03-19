@@ -26,7 +26,7 @@ jobs:
       - run: npm run build
 
       - name: Deploy to netlify
-        uses: nwtgck/actions-netlify@v1.1
+        uses: nwtgck/actions-netlify@v1.1.11
         with:
           publish-dir: './app/parking-finder/dist'
           production-branch: master
@@ -35,7 +35,6 @@ jobs:
           enable-pull-request-comment: false
           enable-commit-comment: false
           overwrites-pull-request-comment: false
-        env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
           timeout-minutes: 1
